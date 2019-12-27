@@ -21,6 +21,7 @@ class BugsnagSourceMapUploaderPlugin {
     this.overwrite = options.overwrite
     this.endpoint = options.endpoint
     this.ignoredBundleExtensions = options.ignoredBundleExtensions || [ '.css' ]
+    this.minifiedUrl = options.minifiedUrl
     this.validate()
   }
 
@@ -111,6 +112,11 @@ class BugsnagSourceMapUploaderPlugin {
     }
     if (this.endpoint) opts.endpoint = this.endpoint
     if (this.overwrite) opts.overwrite = this.overwrite
+    if (typeof this.minifiedUrl === 'function') {
+      opts.minifiedUrl = this.minifiedUrl(sm.url)
+    } else {
+      opts.minifiedUrl = sm.url
+    }
     return opts
   }
 }
